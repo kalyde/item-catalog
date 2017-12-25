@@ -12,4 +12,4 @@ An application that provides a list of items within a variety of categories as w
 
 ## License
 
-The content of this repository is licensed under a [Creative Commons Attribution License](https://creativecommons.org/licenses/by/4.0/)
+The content of this repository is licensed under a [Creative Commons Attribution License](https://creativecommons.org/licenses/by/4.0/) and has been sampled from [Udacity course](https://github.com/udacity/ud330)
