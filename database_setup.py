@@ -23,6 +23,8 @@ class Category(Base):
     name = Column(String(250), nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
+    # Deletes all child menu_items when parent category is deleted
+    menu_item = relationship('MenuItem', cascade='all, delete-orphan')
 
 # Added this serialize function to be able to send JSON objects in a
 # serializable format
