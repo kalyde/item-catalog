@@ -1,5 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, \
-    jsonify, flash
+from flask import (Flask,
+                   render_template,
+                   request, redirect,
+                   url_for,
+                   jsonify,
+                   flash)
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, MenuItem, User
@@ -261,15 +265,14 @@ def newCategory():
 # Edit a Category
 @app.route('/category/<int:category_id>/edit/', methods=['GET', 'POST'])
 def editCategory(category_id):
-    editedCategory = session.query(
-        Category).filter_by(id=category_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-# Not needed once publiccatalog.html and publicmenu.html were implemented
-#    if editedCategory.user_id != login_session['user_id']:
-#        return "<script>function myFunction() {alert('You are not authorized"\
-#            " to edit this restaurant. Please create your own category in " \
-#            "order to edit.');}</script><body onload='myFunction()''>"
+    editedCategory = session.query(
+        Category).filter_by(id=category_id).one()
+    if editedCategory.user_id != login_session['user_id']:
+        return "<script>function myFunction() {alert('You are not authorized"\
+            " to edit this restaurant. Please create your own category in " \
+            "order to edit.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         if request.form['name']:
             editedCategory.name = request.form['name']
@@ -282,15 +285,14 @@ def editCategory(category_id):
 # Delete a Category
 @app.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
 def deleteCategory(category_id):
-    categoryToDelete = session.query(
-        Category).filter_by(id=category_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-# Not needed once publiccatalog.html and publicmenu.html were implemented
-#    if categoryToDelete.user_id != login_session['user_id']:
-#        return "<script>function myFunction() {alert('You are not authorized"\
-#            " to delete this category. Please create your own category in " \
-#            "order to delete it.');}</script><body onload='myFunction()''>"
+    categoryToDelete = session.query(
+        Category).filter_by(id=category_id).one()
+    if categoryToDelete.user_id != login_session['user_id']:
+        return "<script>function myFunction() {alert('You are not authorized"\
+            " to delete this category. Please create your own category in " \
+            "order to delete it.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         session.delete(categoryToDelete)
         flash('%s Successfully Deleted' % categoryToDelete.name)
@@ -306,13 +308,12 @@ def deleteCategory(category_id):
 def newMenuItem(category_id):
     if 'username' not in login_session:
         return redirect('/login')
-# Not needed once publiccatalog.html and publicmenu.html were implemented
-#    category = session.query(Category).filter_by(id=category_id).one()
-#    if login_session['user_id'] != category.user_id:
-#        return "<script>function myFunction() {alert('You are not "\
-#        authorized to add menu items to this category. Please create "\
-#        your own category in order to add items.');}"\
-#            "</script><body onload='myFunction()'>"
+    category = session.query(Category).filter_by(id=category_id).one()
+    if login_session['user_id'] != category.user_id:
+        return "<script>function myFunction() {alert('You are not "\
+        "authorized to add menu items to this category. Please create "\
+        "your own category in order to add items.');}"\
+            "</script><body onload='myFunction()'>"
     if request.method == 'POST':
         newItem = MenuItem(name=request.form['name'], description=request.form[
                            'description'], price=request.form['price'],
@@ -332,13 +333,12 @@ def editMenuItem(category_id, menu_id):
     if 'username' not in login_session:
         return redirect('/login')
     editedItem = session.query(MenuItem).filter_by(id=menu_id).one()
-# Not needed once publiccatalog.html and publicmenu.html were implemented
-#   category = session.query(Category).filter_by(id=category_id).one()
-#    if login_session['user_id'] != category.user_id:
-#        return "<script>function myFunction() {alert('You are not "\
-#        authorized to edit menu items to this category. Please create "\
-#        your own category in order to add items.');}"\
-#            "</script><body onload='myFunction()'>"
+    category = session.query(Category).filter_by(id=category_id).one()
+    if login_session['user_id'] != category.user_id:
+        return "<script>function myFunction() {alert('You are not "\
+        "authorized to edit menu items to this category. Please create "\
+        "your own category in order to add items.');}"\
+            "</script><body onload='myFunction()'>"
     if request.method == 'POST':
         if request.form['name']:
             editedItem.name = request.form['name']
@@ -364,13 +364,12 @@ def deleteMenuItem(category_id, menu_id):
     if 'username' not in login_session:
         return redirect('/login')
     itemToDelete = session.query(MenuItem).filter_by(id=menu_id).one()
-# Not needed once publiccatalog.html and publicmenu.html were implemented
-#   category = session.query(Category).filter_by(id=category_id).one()
-#    if login_session['user_id'] != category.user_id:
-#        return "<script>function myFunction() {alert('You are not "\
-#        authorized to delete menu items to this category. Please create "\
-#        your own category in order to add items.');}"\
-#            "</script><body onload='myFunction()'>"
+    category = session.query(Category).filter_by(id=category_id).one()
+    if login_session['user_id'] != category.user_id:
+        return "<script>function myFunction() {alert('You are not "\
+        "authorized to delete menu items to this category. Please create "\
+        "your own category in order to add items.');}"\
+            "</script><body onload='myFunction()'>"
     if request.method == 'POST':
         session.delete(itemToDelete)
         session.commit()
